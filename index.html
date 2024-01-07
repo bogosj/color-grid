@@ -7,7 +7,7 @@
     .grid {
       display: grid;
       gap: 0;
-      margin-top: 20px; /* Add 20px margin above the grid */
+      margin-top: 20px;
     }
     .square {
       width: 50px;
@@ -25,22 +25,31 @@
     <option value="single">Single</option>
     <option value="adult">Adult</option>
   </select>
-  
+
+  <select id="colorSelector">
+    <option value="red">Red</option>
+    <option value="green">Green</option>
+    <option value="yellow">Yellow</option>
+    <option value="blue">Blue</option>
+    <option value="#2B65EC">Ocean Blue</option>
+    <option value="gray">Gray</option>
+    <option value="#800020">Burgundy</option>
+  </select>
+
   <div class="grid" id="grid"></div>
 
   <script>
     const colors = ['red', 'green', 'yellow', 'blue'];
-    let currentIndex = 0;
 
-    function changeColor(event) {
+    function fillSquare(event) {
       const square = event.target;
-      currentIndex = (currentIndex + 1) % colors.length;
-      square.style.backgroundColor = colors[currentIndex];
+      const selectedColor = document.getElementById('colorSelector').value;
+      square.style.backgroundColor = selectedColor;
     }
 
     function createGrid(rows, cols) {
       const grid = document.getElementById('grid');
-      grid.innerHTML = ''; // Clear previous grid
+      grid.innerHTML = '';
 
       grid.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
       grid.style.gridTemplateRows = `repeat(${rows}, 50px)`;
@@ -48,7 +57,7 @@
       for (let i = 0; i < rows * cols; i++) {
         const square = document.createElement('div');
         square.classList.add('square');
-        square.addEventListener('click', changeColor);
+        square.addEventListener('click', fillSquare);
         grid.appendChild(square);
       }
     }
@@ -91,7 +100,8 @@
     }
 
     document.getElementById('gridSelector').addEventListener('change', handleGridChange);
-    handleGridChange(); // Initialize grid based on default selection
+    document.getElementById('colorSelector').addEventListener('change', fillSquare);
+    handleGridChange();
 
   </script>
 </body>
