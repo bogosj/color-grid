@@ -6,19 +6,26 @@
   <style>
     .grid {
       display: grid;
-      grid-template-columns: repeat(7, 50px);
-      grid-template-rows: repeat(7, 50px);
       gap: 0;
+      margin-top: 20px; /* Add 20px margin above the grid */
     }
     .square {
       width: 50px;
       height: 50px;
       cursor: pointer;
-      border: 1px solid black; /* Add a 1px border */
+      border: 1px solid black;
     }
   </style>
 </head>
 <body>
+  <select id="gridSelector">
+    <option value="baby">Baby</option>
+    <option value="lap">Lap</option>
+    <option value="child">Child</option>
+    <option value="single">Single</option>
+    <option value="adult">Adult</option>
+  </select>
+  
   <div class="grid" id="grid"></div>
 
   <script>
@@ -31,9 +38,14 @@
       square.style.backgroundColor = colors[currentIndex];
     }
 
-    function createGrid() {
+    function createGrid(rows, cols) {
       const grid = document.getElementById('grid');
-      for (let i = 0; i < 7 * 7; i++) {
+      grid.innerHTML = ''; // Clear previous grid
+
+      grid.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
+      grid.style.gridTemplateRows = `repeat(${rows}, 50px)`;
+
+      for (let i = 0; i < rows * cols; i++) {
         const square = document.createElement('div');
         square.classList.add('square');
         square.addEventListener('click', changeColor);
@@ -41,7 +53,46 @@
       }
     }
 
-    createGrid();
+    function handleGridChange() {
+      const selector = document.getElementById('gridSelector');
+      const selectedValue = selector.value;
+
+      let rows = 0;
+      let cols = 0;
+
+      switch (selectedValue) {
+        case 'baby':
+          rows = 4;
+          cols = 5;
+          break;
+        case 'lap':
+          rows = 5;
+          cols = 5;
+          break;
+        case 'child':
+          rows = 6;
+          cols = 6;
+          break;
+        case 'single':
+          rows = 7;
+          cols = 6;
+          break;
+        case 'adult':
+          rows = 7;
+          cols = 7;
+          break;
+        default:
+          rows = 7;
+          cols = 7;
+          break;
+      }
+
+      createGrid(rows, cols);
+    }
+
+    document.getElementById('gridSelector').addEventListener('change', handleGridChange);
+    handleGridChange(); // Initialize grid based on default selection
+
   </script>
 </body>
 </html>
